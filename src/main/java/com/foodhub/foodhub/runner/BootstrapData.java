@@ -1,16 +1,10 @@
 package com.foodhub.foodhub.runner;
 
-import com.foodhub.foodhub.entities.Cuisine;
-import com.foodhub.foodhub.entities.MenuItem;
-import com.foodhub.foodhub.entities.Restaurant;
 import com.foodhub.foodhub.repositories.MenuItemRepository;
 import com.foodhub.foodhub.repositories.RestaurantRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @AllArgsConstructor
