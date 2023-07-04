@@ -1,0 +1,217 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FoodHub</title>
+    <meta name="description" content="FoodHub">
+    <meta name="author" content="FoodHub">
+    <meta name="keywords" content="FoodHub">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.0/flowbite.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.css"
+          integrity="sha512-mD70nAW2ThLsWH0zif8JPbfraZ8hbCtjQ+5RU1m4+ztZq6/MymyZeB55pWsi4YAX+73yvcaJyk61mzfYMvtm9w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script type="module"
+            src="https://unpkg.com/@google/model-viewer@0.3.1/dist/model-viewer.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js" integrity="sha512-8pbzenDolL1l5OPSsoURCx9TEdMFTaeFipASVrMYKhuYtly+k3tcsQYliOEKTmuB1t7yuzAiVo+yd7SJz+ijFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .wrapper {
+            display: grid;
+            height: 100vh;
+            place-items: center
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+<nav class="bg-white border-gray-200 dark:bg-gray-900">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="./home" class="flex items-center">
+            <img src="logo.png" class="h-8 mr-3" alt="FoodHub Logo"/>
+            <span class="self-center text-xl font-bold text-gray-800 dark:text-white md:text-2xl md:font-black"
+            >FoodHub</span>
+        </a>
+        <div class="flex items-center md:order-2">
+            <button type="button"
+                    class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" alt="user photo" id="user-photo"
+                     src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
+                >
+            </button>
+            <!-- Dropdown menu -->
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                 id="user-dropdown">
+                <div class="px-4 py-3">
+                    <span class="block text-sm text-gray-900 dark:text-white" id="user-name"></span>
+                    <span class="block text-sm  text-gray-500 truncate dark:text-gray-400" id="user-email"></span>
+                </div>
+                <ul class="py-2" aria-labelledby="user-menu-button">
+                    <li>
+                        <a href="#"
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                           onclick="signOut();"
+                        >Sign Out</a>
+                    </li>
+                </ul>
+            </div>
+            <button data-collapse-toggle="mobile-menu-2" type="button"
+                    class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    aria-controls="mobile-menu-2" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                          clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="mobile-menu-2">
+            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                <li>
+                    <a href="./"
+                       class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+                       aria-current="page">Home</a>
+                </li>
+                <li>
+                    <a href="./preferences"
+                       class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Preferences</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<main class="flex-1 relative z-0 overflow-y-auto focus:outline-none align-middle justify-center items-center w-full h-full bg-gray-100 dark:bg-gray-900">
+    <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 align-middle justify-center items-center">
+        <div class="flex flex-row justify-center items-center">
+            <div class="flex flex-col justify-center items-center">
+                <H2 class="text-2xl font-bold text-gray-900 dark:text-white" id="title">Suggested Restaurants</H2>
+                <div id="restaurants-list">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mobile bg-gray-100 dark:bg-gray-900">
+        <div class="mobile bg-gray-100 dark:bg-gray-900">
+            <label for="latitude"></label><input type="text" id="latitude" placeholder="latitude" hidden>
+            <label for="longitude"></label><input type="text" id="longitude" placeholder="longitude" hidden>
+            <div id="map" style="height: 75%;"></div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.0/flowbite.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.querySelector('html').classList.add('dark');
+        }
+    });
+    const userToken = localStorage.getItem('userToken');
+    if (!userToken) {
+        window.location.href = './';
+    }
+    //get latitude and longitude from the url
+    const urlParams = new URLSearchParams(window.location.search);
+    const restaurantId = urlParams.get('restaurantId');
+    console.log(restaurantId);
+    //if latitude and longitude are not present in the url, redirect to the home page
+    if (!latitude || !longitude) {
+        window.location.href = './';
+    }
+
+    const data = localStorage.getItem('restaurants');
+    //find the restaurant from the list of restaurants
+    let restaurant;
+    if (data) {
+        const restaurants = JSON.parse(data);
+        console.log(restaurants);
+        restaurants.forEach(r => {
+            console.log(r.id);
+            if (r.id+'' === restaurantId) {
+                restaurant = r;
+            }
+        });
+        console.log(restaurant);
+    }
+    if (restaurant === undefined) {
+       // window.location.href = './';
+    }
+    const title = document.getElementById('title');
+    title.innerHTML = 'Menu for ' + restaurant.name;
+    const menuItems = restaurant.menuItems;
+    const restaurantDiv = document.getElementById('restaurants-list');
+    restaurantDiv.innerHTML = '';
+    menuItems.forEach(menuItem => {
+        const menuItemCard = document.createElement('div');
+        menuItemCard.classList.add('max-w-md', 'md:max-w-2xl', 'px-2', 'py-4', 'bg-white', 'rounded-lg', 'shadow-xl', 'dark:bg-gray-800', 'md:px-4');
+        const menuItemCardInner = document.createElement('div');
+        menuItemCardInner.classList.add('bg-white', 'shadow-xl', 'rounded-lg', 'overflow-hidden', 'md:flex', 'dark:bg-gray-800');
+        const menuItemCardImage = document.createElement('div');
+        menuItemCardImage.classList.add('md:flex-shrink-0');
+        const menuItemCardImageInner = document.createElement('img');
+        menuItemCardImageInner.classList.add('h-48', 'w-full', 'object-cover', 'md:w-48');
+        menuItemCardImageInner.src = menuItem.itemImage;
+        menuItemCardImageInner.alt = menuItem.itemName;
+        menuItemCardImage.appendChild(menuItemCardImageInner);
+        menuItemCardInner.appendChild(menuItemCardImage);
+        const menuItemCardInfo = document.createElement('div');
+        menuItemCardInfo.classList.add('p-8');
+        const menuItemCardTitle = document.createElement('h3');
+        menuItemCardTitle.classList.add('text-2xl', 'font-semibold', 'text-gray-800', 'dark:text-white');
+        menuItemCardTitle.innerText = menuItem.itemName;
+        menuItemCardInfo.appendChild(menuItemCardTitle);
+        const menuItemCardDescription = document.createElement('p');
+        menuItemCardDescription.classList.add('mt-2', 'text-gray-600', 'dark:text-gray-400');
+        menuItemCardDescription.innerText = menuItem.description;
+        menuItemCardInfo.appendChild(menuItemCardDescription);
+        const menuItemCardPrice = document.createElement('p');
+        menuItemCardPrice.classList.add('mt-2', 'text-gray-600', 'dark:text-gray-400', 'font-semibold', 'text-lg', 'text-right', 'md:text-left', 'md:mt-4');
+        menuItemCardPrice.innerText = 'RS.'+menuItem.price;
+        //button
+        const menuItemCardButton = document.createElement('button');
+        menuItemCardButton.classList.add('mt-4', 'px-4', 'py-2', 'bg-green-700', 'text-white', 'rounded-lg', 'shadow-md', 'hover:bg-green-600', 'focus:outline-none', 'focus:ring', 'focus:ring-green-500', 'focus:ring-opacity-50', 'dark:bg-green-500', 'dark:hover:bg-green-400', 'md:mt-0', 'md:ml-4', 'float-right', 'mr-4', 'mb-4');
+        menuItemCardButton.innerText = 'View 3D Model';
+        menuItemCardButton.addEventListener('click', () => {
+            window.location.href = 'https://playcanvas.com/viewer/?load='+menuItem.item3DModelURL;
+        });
+        //call restaurant button
+        const menuItemCardCallButton = document.createElement('button');
+        menuItemCardCallButton.classList.add('mt-4', 'px-4', 'py-2', 'bg-blue-700', 'text-white', 'rounded-lg', 'shadow-md', 'hover:bg-blue-600', 'focus:outline-none', 'focus:ring', 'focus:ring-blue-500', 'focus:ring-opacity-50', 'dark:bg-blue-500', 'dark:hover:bg-blue-400', 'md:mt-0', 'md:ml-4');
+        menuItemCardCallButton.innerText = 'Call Restaurant';
+        menuItemCardCallButton.addEventListener('click', () => {
+            window.location.href = 'tel:'+restaurant.phoneNumber;
+        });
+        menuItemCardInfo.appendChild(menuItemCardPrice);
+        menuItemCardInfo.appendChild(menuItemCardButton);
+        menuItemCardInfo.appendChild(menuItemCardCallButton);
+        menuItemCardInner.appendChild(menuItemCardInfo);
+        menuItemCard.appendChild(menuItemCardInner);
+        restaurantDiv.appendChild(menuItemCard);
+    });
+    const userDetail = "./api/users/getUser/" + userToken;
+    fetch(userDetail)
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === "error"){
+                window.location.href = "./login";
+            }
+            if(data.statusCodeValue!=null&&data.statusCodeValue!==200){
+                localStorage.removeItem("userToken");
+                window.location.href = "./login";
+            }
+            document.getElementById("user-name").innerText = data.body.name;
+            document.getElementById("user-email").innerText = data.body.email;
+            const md5Email = md5(data.body.email);
+            document.getElementById("user-photo").src = "https://www.gravatar.com/avatar/" + md5Email + "?d=https://mdbcdn.b-cdn.net/img/new/avatars/1.webp";
+
+        });
+</script>
+<script nomodule
+        src="https://unpkg.com/@google/model-viewer@0.3.1/dist/model-viewer-legacy.js">
+</script>
+</body>
+</html>
