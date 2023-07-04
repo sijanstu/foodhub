@@ -7,18 +7,22 @@ import com.foodhub.foodhub.repositories.RestaurantRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 @AllArgsConstructor
 public class RestaurantService {
-    private final RestaurantRepository restaurantRepository;
-    private final MenuItemRepository menuItemRepository;
+    private RestaurantRepository restaurantRepository;
+    private MenuItemRepository menuItemRepository;
+    public List<Restaurant> restaurants = new ArrayList<>();
 
     //get all restaurants
     public List<Restaurant> getAllRestaurants() {
-        List<Restaurant> restaurants = restaurantRepository.findAll();
+        if (restaurants.isEmpty()) {
+            restaurants = restaurantRepository.findAll();
+        }
         List<MenuItem> menuItems = menuItemRepository.findAll();
         for (Restaurant restaurant : restaurants) {
             for (MenuItem menuItem : menuItems) {

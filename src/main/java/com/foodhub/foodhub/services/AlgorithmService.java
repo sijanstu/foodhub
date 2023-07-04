@@ -30,7 +30,8 @@ public class AlgorithmService {
 
     public List<Restaurant> getRecommendedRestaurants(User user, int k) {
         List<Restaurant> restaurants = restaurantService.getAllRestaurants();
-        return getRecommendedRestaurants(user, restaurants, k);
+        List<Restaurant> recommendedRestaurants=getRecommendedRestaurants(user, restaurants, k);
+        return recommendedRestaurants.stream().sorted(Comparator.comparing(Restaurant::getDistance)).collect(Collectors.toList());
     }
 
     public List<Restaurant> getRecommendedRestaurants(User user, List<Restaurant> restaurants, int k) {
