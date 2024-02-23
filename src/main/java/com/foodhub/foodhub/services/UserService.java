@@ -19,7 +19,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final AlgorithmService algorithmService;
 
-    //signup
     public boolean signup(User user, Model model) {
         //check if email is valid
         if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
@@ -98,8 +97,8 @@ public class UserService {
 
     private String checkToken(String token) {
         String decodedToken = new String(Base64.getDecoder().decode(token));
-        String userID=decodedToken.substring(0, decodedToken.indexOf("-"));
-        String time=decodedToken.substring(decodedToken.indexOf("-")+1);
+        String userID = decodedToken.substring(0, decodedToken.indexOf("-"));
+        String time = decodedToken.substring(decodedToken.indexOf("-") + 1);
         //check if logged in within last 7 days
         if (System.currentTimeMillis() - Long.parseLong(time) > 604800000) {
             return null;

@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class AlgorithmService {
-    private final RestaurantService restaurantService;
-    private final UserRepository userService;
+    private final RestaurantService restaurantService; //restaurant dataset
+    private final UserRepository userService; //user dataset
 
-    public ResponseEntity<?> getRecommendedRestaurants(Double latitude, Double longitude, Long userId, int k) {
+    public ResponseEntity<?> getRestaurants(Double latitude, Double longitude, Long userId, int k) {
         User user = userService.findById(userId).orElse(null);
 
         if (user == null) {
@@ -88,7 +88,6 @@ public class AlgorithmService {
         int dotProduct = 0;
         int userPreferenceMagnitude = userPreference.size();
         int restaurantCuisineMagnitude = 1;
-
         for (Cuisine cuisine : userPreference) {
             if (cuisine.equals(restaurantCuisine)) {
                 dotProduct++;
@@ -113,24 +112,17 @@ public class AlgorithmService {
     }
 
     public ResponseEntity<?> getRestaurantsNearby(double latitude, double longitude, double n) {
-        //n number of restaurants available most near to the user
         List<Restaurant> restaurants = restaurantService.getAllRestaurants();
         List<Restaurant> restaurantsNearby = new ArrayList<>();
-
-        //find the distant between the user and the restaurants
         Map<Restaurant, Double> distances = new HashMap<>();
         for (Restaurant restaurant : restaurants) {
             double distance = Math.sqrt(Math.pow(latitude - restaurant.getLatitude(), 2) +
                     Math.pow(longitude - restaurant.getLongitude(), 2));
             distances.put(restaurant, distance);
         }
-
-        //sort the restaurants by distance
         List<Map.Entry<Restaurant, Double>> sortedDistances = distances.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
                 .collect(Collectors.toList());
-
-        //get the n closest restaurants maximum n
         for (int i = 0; i < n && i < sortedDistances.size(); i++) {
             restaurantsNearby.add(sortedDistances.get(i).getKey());
         }
